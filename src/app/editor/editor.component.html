@@ -52,8 +52,9 @@
             <button class="btn btn-lg pull-xs-right btn-primary" type="button" (click)="submitForm()">
               Publish Article
             </button>
-
           </fieldset>
+          <section *ngIf="getInspiredError" class="alert">We're currently having issues with getting your random cat fact. Please try again later.</section>
+          
         </form>
 
       </div>

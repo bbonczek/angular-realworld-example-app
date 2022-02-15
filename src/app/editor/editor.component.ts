@@ -8,6 +8,7 @@ import { CatFactsService } from '../core/services/cat-facts.service';
 @Component({
   selector: 'app-editor-page',
   templateUrl: './editor.component.html',
+  styleUrls: ['./editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditorComponent implements OnInit {
@@ -15,6 +16,7 @@ export class EditorComponent implements OnInit {
   articleForm: FormGroup;
   tagField = new FormControl();
   errors: Object = {};
+  getInspiredError = false;
   isSubmitting = false;
 
   constructor(
@@ -94,6 +96,8 @@ export class EditorComponent implements OnInit {
   }
 
   getInspired() {
+    this.getInspiredError = false;
+
     this.catFactsService.getRandom().subscribe(
       catFact => {
         this.articleForm.get('body').setValue(catFact.text);
@@ -101,6 +105,7 @@ export class EditorComponent implements OnInit {
       },
       err => {
         this.errors = err;
+        this.getInspiredError = true;
         this.cd.markForCheck();
       }
     );
