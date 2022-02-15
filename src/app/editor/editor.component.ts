@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Article, ArticlesService } from '../core';
+import { CatFactsService } from '../core/services/cat-facts.service';
 
 @Component({
   selector: 'app-editor-page',
@@ -18,6 +19,7 @@ export class EditorComponent implements OnInit {
 
   constructor(
     private articlesService: ArticlesService,
+    private catFactsService: CatFactsService,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
@@ -89,5 +91,18 @@ export class EditorComponent implements OnInit {
 
   updateArticle(values: Object) {
     Object.assign(this.article, values);
+  }
+
+  getInspired() {
+    this.catFactsService.getRandom().subscribe(
+      catFact => {
+        this.articleForm.get('body').setValue(catFact.text);
+        this.cd.markForCheck();
+      },
+      err => {
+        this.errors = err;
+        this.cd.markForCheck();
+      }
+    );
   }
 }
